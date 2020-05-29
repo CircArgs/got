@@ -1,4 +1,4 @@
-# Solutions to Elements of Programming Interviews in Python
+# got
 
 <div align="center">
 <img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg">
