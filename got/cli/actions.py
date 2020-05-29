@@ -5,8 +5,15 @@ import argparse
 
 class Init(argparse.Action):
     def __call__(self, parser, namespace, values, option_string=None):
-        path = os.getcwd()
-        os.system("git init")
-        with open(".git/.gitignore", "w") as gitignore:
+        print(parser)
+        print(namespace)
+        print(values)
+        print(os.getcwd())
+        os.system("git init got_temp")
+        with open(os.path.join("got_temp", ".git", ".gitignore"), "w") as gitignore:
             gitignore.write("*")
-        shutil.move(".git", os.path.join(path, ".got"))
+        os.rename(os.path.join("got_temp", ".git"),
+                  os.path.join("got_temp", ".got"))
+        shutil.move(os.path.join("got_temp", ".got"),
+                    os.path.dirname(os.path.abspath("got_temp")))
+        shutil.rmtree("got_temp")
