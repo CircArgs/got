@@ -1,4 +1,5 @@
 import os
 
 
-def GIT(cmd): os.system("git --git-dir=.got {}".format(cmd))
+def GIT(cmd):
+    os.system("git --git-dir=.got {}".format(cmd))
