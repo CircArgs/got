@@ -1,0 +1,29 @@
+[tool.poetry]
+name = "got"
+version = "0.0.1"
+description = "Got: A a git based undo tree. Commit often? Got it."
+
+license = "Apache-2.0"
+
+authors = [
+    "Nick Ouellet <nicholas.p.ouellet@gmail.com>"
+]
+
+readme = 'README.md'  # Markdown files are supported
+
+repository = "https://github.com/CircArgs/got"
+homepage = "https://github.com/CircArgs/got"
+
+keywords = ['git', 'got', 'commit', 'source control']
+
+[tool.poetry.dependencies]
+python = "^3.6"  # Compatible python versions must be declared here
+
+[tool.poetry.dev-dependencies]
+pytest = "^3.0"
+pytest-cov = "^2.4"
+black = {version = "^19.10b0", allow-prereleases = true}
+
+
+[tool.poetry.scripts]
+my-script = 'got:__main__'
