@@ -6,6 +6,9 @@ import os
 import time
 from watchdog.observers import Observer
 from .events.got_handler import GotHandler
+from prep import prep
+
+prep(".")
 
 
 class Got:

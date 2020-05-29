@@ -1,4 +1,5 @@
 import os
+from ..macros import GIT
 from watchdog.events import RegexMatchingEventHandler
 
 
@@ -11,5 +12,5 @@ class GotHandler(RegexMatchingEventHandler):
         self.process(event)
 
     def process(self, event):
-        os.system("git add {}".format(event.src_path))
-        os.system('git commit -m "modified file {}"'.format(event.src_path))
+        GIT("add {}".format(event.src_path))
+        GIT('-m "modified file {}"'.format(event.src_path))
