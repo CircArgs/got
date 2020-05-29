@@ -20,7 +20,7 @@ class Init(Command):
         move_to = os.path.dirname(os.path.abspath("got_temp"))
         if is_got(move_to):
             if yes or not self.confirm(
-                "<warning> {} already contains .got. Would you like to overwrite it? y/(n, Return):</warning>".format(
+                "<warning> {} already contains .got. Would you like to overwrite it?</warning>".format(
                     move_to
                 ),
                 False,
@@ -40,7 +40,7 @@ class Init(Command):
         )
         shutil.rmtree("got_temp")
         self.line(
-            "<success>Initialized empty Git repository in {}</success>".format(
+            "<success>Initialized empty Got repository in {}</success>".format(
                 os.path.join(move_to, ".got")
             )
         )
