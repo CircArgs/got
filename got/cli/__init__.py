@@ -1,1 +1,1 @@
-from .command import command as cli
+from .cli import application as cli

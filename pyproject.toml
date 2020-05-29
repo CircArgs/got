@@ -18,12 +18,14 @@ keywords = ['git', 'got', 'commit', 'source control']
 
 [tool.poetry.dependencies]
 python = "^3.6"  # Compatible python versions must be declared here
+cleo = "^0.8.1"
 
 [tool.poetry.dev-dependencies]
 pytest = "^3.0"
 pytest-cov = "^2.4"
 black = {version = "^19.10b0", allow-prereleases = true}
+pylint = "^2.5.2"
 
 
 [tool.poetry.scripts]
-my-script = 'got:__main__'
+got = 'got:got'
