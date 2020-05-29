@@ -4,7 +4,6 @@ import shutil
 from cleo import Command
 from ...utils import is_got, remove_got
 
-
 class Init(Command):
     """
     Instantiates Got
