@@ -1,1 +1,1 @@
-from .macros import GIT
+from .GIT import GIT

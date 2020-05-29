@@ -39,4 +39,8 @@ class Init(Command):
             os.path.join("got_temp", ".got"), move_to,
         )
         shutil.rmtree("got_temp")
-        self.line("<success>Instantiating got dir</success>")
+        self.line(
+            "<success>Initialized empty Git repository in {}</success>".format(
+                os.path.join(move_to, ".got")
+            )
+        )

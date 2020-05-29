@@ -14,7 +14,5 @@ class Git(Command):
     """
 
     def handle(self):
-
         git_command = " ".join(self.argument("git"))
-        print(git_command)
-        GIT(git_command, False, True)
+        GIT(git_command, False)
