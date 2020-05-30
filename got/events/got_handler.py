@@ -12,5 +12,6 @@ class GotHandler(RegexMatchingEventHandler):
         self.process(event)
 
     def process(self, event):
-        GIT("add {}".format(event.src_path))
-        GIT('-m "modified file {}"'.format(event.src_path))
+        pass
+        # GIT("add {}".format(event.src_path))
+        # GIT('-m "modified file {}"'.format(event.src_path))

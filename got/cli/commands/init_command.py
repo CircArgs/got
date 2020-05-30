@@ -1,5 +1,6 @@
 # https://cleo.readthedocs.io/en/latest/
 import os
+import subprocess
 import shutil
 from cleo import Command
 from colorama import Fore
@@ -18,7 +19,7 @@ class Init(Command):
         yes = self.option("yes")
         self.add_style("success", fg="blue", bg="green", options=["bold", "blink"])
         self.line("<comment>Checking for existing got dir</comment>")
-        move_to = os.path.dirname(os.path.abspath("got_temp"))
+        move_to = os.path.dirname(os.path.abspath("__got_temp__"))
         if is_got(move_to):
             if not (
                 yes
@@ -37,16 +38,24 @@ class Init(Command):
                 remove_got(move_to)
         else:
             self.line("<info>No existing got dir. Instantiating new got dir</info>")
-        os.system("git init -q got_temp")
-        with open(os.path.join("got_temp", ".git", ".gitignore"), "w") as gitignore:
-            gitignore.write("*")
-        os.rename(os.path.join("got_temp", ".git"), os.path.join("got_temp", ".got"))
-        shutil.move(
-            os.path.join("got_temp", ".got"), move_to,
+        init_res = subprocess.run(
+            ["git", "init", "-q", "__got_temp__"], capture_output=True
         )
-        shutil.rmtree("got_temp")
+        if init_res.returncode:
+            self.line(
+                "<error>Could not use git. Failed to instantiate got dir.</error>"
+            )
+        with open(os.path.join("__got_temp__", ".git", ".gitignore"), "w") as gitignore:
+            gitignore.write("*")
+        os.rename(
+            os.path.join("__got_temp__", ".git"), os.path.join("__got_temp__", ".got")
+        )
+        shutil.move(
+            os.path.join("__got_temp__", ".got"), move_to,
+        )
+        shutil.rmtree("__got_temp__")
         self.line(
-            "<success>Initialized empty Got repository in {}</success>".format(
+            "<success>🤩 Initialized empty Got repository in {}</success>".format(
                 os.path.join(move_to, ".got")
             )
         )

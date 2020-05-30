@@ -1,6 +1,7 @@
-from .commands import Init, Git
+from .commands import Init, Git, Start
 from cleo import Application
 
-application = Application("Got. Commiting often. \n got it?", complete=True)
+application = Application("Got. Commiting often. got it?", complete=True)
 application.add(Init())
 application.add(Git())
+application.add(Start())

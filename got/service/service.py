@@ -5,24 +5,44 @@ import sys
 import os
 import time
 from watchdog.observers import Observer
+from colorama import Fore
 from ..events import GotHandler
+from ..cli import cli
+from cleo import CommandTester
 import fnmatch
 
 
 class Got:
-    def __init__(self, src_path):
-        with open(os.path.join(src_path, ".gotignore")) as got_ignore:
-            got_ignore = got_ignore.readlines()
-            got_ignore = list(map(fnmatch.translate, got_ignore))
+    def __init__(self, src_path, interactive=False):
+        got_ignore = [".git"]
+        got_ignore_path = os.path.join(src_path, ".gotignore")
+        if os.path.exists(got_ignore_path):
+            with open(got_ignore_path) as got_ignore:
+                got_ignore += got_ignore.readlines()
+        self.got_ignore = list(map(fnmatch.translate, got_ignore))
+        self.interactive=interactive
         self.__src_path = src_path
-        self.__event_handler = GotHandler(got_ignore)
+        self.__event_handler = GotHandler(self.got_ignore)
         self.__event_observer = Observer()
 
-    def run(self):
+    def run(self, interactive=False):
+
         self.start()
         try:
             while True:
-                time.sleep(1)
+                if not self.interactive:
+                    time.sleep(1)
+                else:
+                    print("got: ", end="")
+                    cmd = input()
+                    if cmd in ("quit", "q"):
+                        return
+                    cmd = cmd.split(" ")
+                    name, args = cmd[0], " ".join(cmd[1:])
+                    command = cli.application.find(name)
+                    command = CommandTester(command)
+                    command.execute(args)
+
         except KeyboardInterrupt:
             self.stop()
 
