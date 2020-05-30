@@ -2,6 +2,7 @@ import os
 from colorama import Fore
 from ..utils import is_got
 
+
 def GIT(cmd, git_quiet=True, show=False):
     if not is_got():
         print(Fore.RED + "Not a got repository (or any of the parent directories).")
