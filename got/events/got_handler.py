@@ -1,5 +1,5 @@
 import os
-from ..macros import GIT
+from got.macros import GIT
 from watchdog.events import RegexMatchingEventHandler
 
 

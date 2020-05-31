@@ -27,6 +27,5 @@ pytest-cov = "^2.4"
 black = {version = "^19.10b0", allow-prereleases = true}
 pylint = "^2.5.2"
 
-
 [tool.poetry.scripts]
 got = 'got:run'

@@ -6,8 +6,8 @@ import os
 import time
 from watchdog.observers import Observer
 from colorama import Fore
-from ..events import GotHandler
-from ..cli import cli
+from got.events import GotHandler
+from got.cli import cli
 from cleo import CommandTester
 import fnmatch
 
@@ -20,7 +20,7 @@ class Got:
             with open(got_ignore_path) as got_ignore:
                 got_ignore += got_ignore.readlines()
         self.got_ignore = list(map(fnmatch.translate, got_ignore))
-        self.interactive=interactive
+        self.interactive = interactive
         self.__src_path = src_path
         self.__event_handler = GotHandler(self.got_ignore)
         self.__event_observer = Observer()

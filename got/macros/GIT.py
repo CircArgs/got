@@ -1,6 +1,6 @@
 import os
 from colorama import Fore
-from ..utils import is_got
+from got.utils import is_got
 
 
 def GIT(cmd, git_quiet=False, show=False):
