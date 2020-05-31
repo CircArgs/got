@@ -39,14 +39,14 @@ class Got:
                         return
                     cmd = cmd.split(" ")
                     name, args = cmd[0], " ".join(cmd[1:])
+                    command = None
                     try:
                         command = cli.application.find(name)
                     except:
                         pass
-                    if command:
+                    if not command is None:
                         command = CommandTester(command)
                         command.execute(args)
-                    
 
         except KeyboardInterrupt:
             self.stop()
