@@ -41,8 +41,8 @@ class Got:
                     name, args = cmd[0], " ".join(cmd[1:])
                     try:
                         command = cli.application.find(name)
-                    except Exception as e:
-                        print(e)
+                    except:
+                        print(Fore.RED + 'The command `{}` is not a valid got command.'.format(cmd))
                         
                     command = CommandTester(command)
                     command.execute(args)
