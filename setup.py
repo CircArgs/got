@@ -36,6 +36,6 @@ setup(
     packages=['got', 'got.cli', 'got.cli.commands', 'got.events', 'got.macros', 'got.service', 'got.utils'],
     package_dir={"": "."},
     package_data={},
-    install_requires=['cleo==0.*,>=0.8.1', 'colorama==0.*,>=0.4.3'],
+    install_requires=['cleo==0.*,>=0.8.1', 'colorama==0.*,>=0.4.3', 'watchdog==0.*,>=0.10.2'],
     extras_require={"dev": ["black==19.*,>=19.10.0.b0", "dephell==0.*,>=0.8.3", "pylint==2.*,>=2.5.2", "pytest==3.*,>=3.0.0", "pytest-cov==2.*,>=2.4.0"]},
 )
