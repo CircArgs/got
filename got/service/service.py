@@ -39,7 +39,11 @@ class Got:
                         return
                     cmd = cmd.split(" ")
                     name, args = cmd[0], " ".join(cmd[1:])
-                    command = cli.application.find(name)
+                    try:
+                        command = cli.application.find(name)
+                    except Exception as e:
+                        print(e)
+                        
                     command = CommandTester(command)
                     command.execute(args)
 
