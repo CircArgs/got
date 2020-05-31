@@ -42,10 +42,11 @@ class Got:
                     try:
                         command = cli.application.find(name)
                     except:
-                        print(Fore.RED + 'The command `{}` is not a valid got command.'.format(cmd))
-                        
-                    command = CommandTester(command)
-                    command.execute(args)
+                        pass
+                    if command:
+                        command = CommandTester(command)
+                        command.execute(args)
+                    
 
         except KeyboardInterrupt:
             self.stop()
