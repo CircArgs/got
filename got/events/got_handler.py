@@ -8,10 +8,12 @@ class GotHandler(RegexMatchingEventHandler):
         self.got_ignore = got_ignore
         super().__init__(ignore_regexes=self.got_ignore)
 
-    def on_any_event(self, event):
+    def on_modified(self, event):
+
         self.process(event)
 
     def process(self, event):
-        pass
-        # GIT("add {}".format(event.src_path))
-        # GIT('-m "modified file {}"'.format(event.src_path))
+        cmd = GIT("add {}".format(event.src_path), exec=False)
+        cmd += " && "
+        cmd += GIT('commit -m "modified file {}"'.format(event.src_path), exec=False)
+        os.system(cmd)

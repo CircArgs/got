@@ -15,7 +15,7 @@ import fnmatch
 
 class Got:
     def __init__(self, src_path, interactive=False):
-        got_ignore = [".git"]
+        got_ignore = [".git", ".got"]
         got_ignore_path = os.path.join(src_path, ".gotignore")
         if os.path.exists(got_ignore_path):
             with open(got_ignore_path) as got_ignore:
@@ -31,28 +31,29 @@ class Got:
         self.start()
         # intro for repl
         if self.interactive:
-            repl_intro="The got repl. VERSION {}".format(version)
-            print("="*len(repl_intro)+"\n")
+            repl_intro = "The got repl. VERSION {}".format(version)
+            print("=" * len(repl_intro) + "\n")
             print(repl_intro)
-            print("\n"+"="*len(repl_intro)+"\n")
+            print("\n" + "=" * len(repl_intro) + "\n")
         try:
             while True:
-                #not repl
+                # not repl
                 if not self.interactive:
                     time.sleep(1)
-                else:#repl
-                    print(Fore.MAGENTA+"got: ", end="")
-                    #get user input
+                else:  # repl
+                    print(Fore.MAGENTA + "got: ", end="")
+                    # get user input
                     cmd = input().strip()
-                    #repl exit commands
+                    # repl exit commands
                     if cmd in ("quit", "q"):
                         return
                     cmd = cmd.split(" ")
-                    #command name is first
+                    # command name is first
                     name, args = cmd[0], " ".join(cmd[1:])
-                    #no command entered skip
+                    # no command entered skip
                     if not name:
                         continue
+                    command = None
                     try:
                         command = cli.application.find(name)
                     except NoSuchCommandException as e:

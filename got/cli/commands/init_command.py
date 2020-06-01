@@ -46,7 +46,7 @@ class Init(Command):
                 "<error>Could not use git. Failed to instantiate got dir.</error>"
             )
         with open(os.path.join("__got_temp__", ".git", ".gitignore"), "w") as gitignore:
-            gitignore.write("*")
+            gitignore.write("*\n*/")
         os.rename(
             os.path.join("__got_temp__", ".git"), os.path.join("__got_temp__", ".got")
         )
