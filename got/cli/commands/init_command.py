@@ -46,7 +46,7 @@ class Init(Command):
                 "<error>Could not use git. Failed to instantiate got dir.</error>"
             )
         with open(os.path.join("__got_temp__", ".git", ".gitignore"), "w") as gitignore:
-            gitignore.write("*\n*/")
+            gitignore.write("/*")
         os.rename(
             os.path.join("__got_temp__", ".git"), os.path.join("__got_temp__", ".got")
         )
@@ -55,7 +55,7 @@ class Init(Command):
         )
         shutil.rmtree("__got_temp__")
         self.line(
-            "<success>🤩 Initialized empty Got repository in {}</success>".format(
+            "<success>Initialized empty Got repository in {} 🤩</success>".format(
                 os.path.join(move_to, ".got")
             )
         )

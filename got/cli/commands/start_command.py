@@ -1,7 +1,7 @@
 import os
 from cleo import Command
-from ...service import Got
-from ...utils import is_got
+from got.service import Got
+from got.utils import is_got
 
 
 class Start(Command):
@@ -20,7 +20,4 @@ class Start(Command):
             return
         interactive = self.option("interactive")
         got = Got(os.getcwd(), interactive=interactive)
-        if not interactive:
-            target = got.run
-        else:
-            got.run()
+        got.run()

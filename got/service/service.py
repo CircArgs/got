@@ -15,7 +15,7 @@ import fnmatch
 
 class Got:
     def __init__(self, src_path, interactive=False):
-        got_ignore = [".git", ".got"]
+        got_ignore = ["/.git", "/.got", "*"]
         got_ignore_path = os.path.join(src_path, ".gotignore")
         if os.path.exists(got_ignore_path):
             with open(got_ignore_path) as got_ignore:

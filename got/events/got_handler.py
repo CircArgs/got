@@ -9,8 +9,8 @@ class GotHandler(RegexMatchingEventHandler):
         super().__init__(ignore_regexes=self.got_ignore)
 
     def on_modified(self, event):
-
-        self.process(event)
+        print(event)
+        # self.process(event)
 
     def process(self, event):
         cmd = GIT("add {}".format(event.src_path), exec=False)
