@@ -5,10 +5,11 @@ import sys
 import os
 import time
 from watchdog.observers import Observer
-from colorama import Fore
+from colorama import Fore, Back
 from got.events import GotHandler
 from got.cli import cli
-from cleo import CommandTester
+from got.__version__ import version
+from clikit.api.command.exceptions import NoSuchCommandException
 import fnmatch
 
 
@@ -28,25 +29,45 @@ class Got:
     def run(self, interactive=False):
 
         self.start()
+        # intro for repl
+        if self.interactive:
+            repl_intro="The got repl. VERSION {}".format(version)
+            print("="*len(repl_intro)+"\n")
+            print(repl_intro)
+            print("\n"+"="*len(repl_intro)+"\n")
         try:
             while True:
+                #not repl
                 if not self.interactive:
                     time.sleep(1)
-                else:
-                    print("got: ", end="")
-                    cmd = input()
+                else:#repl
+                    print(Fore.MAGENTA+"got: ", end="")
+                    #get user input
+                    cmd = input().strip()
+                    #repl exit commands
                     if cmd in ("quit", "q"):
                         return
                     cmd = cmd.split(" ")
+                    #command name is first
                     name, args = cmd[0], " ".join(cmd[1:])
-                    command = None
+                    #no command entered skip
+                    if not name:
+                        continue
                     try:
                         command = cli.application.find(name)
-                    except:
-                        pass
+                    except NoSuchCommandException as e:
+                        print(Fore.RED + str(e))
                     if not command is None:
-                        command = CommandTester(command)
-                        command.execute(args)
+                        try:
+                            command.call(name, args)
+                        except Exception as e:
+                            print(
+                                Fore.RED
+                                + "There was an error processing your command `{}`. The error emitted by the command was:".format(
+                                    name
+                                )
+                            )
+                            print(Fore.LIGHTRED_EX + Back.LIGHTWHITE_EX + str(e))
 
         except KeyboardInterrupt:
             self.stop()
