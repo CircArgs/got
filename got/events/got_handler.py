@@ -1,16 +1,16 @@
 import os
 from got.macros import GIT
-from watchdog.events import RegexMatchingEventHandler
+from watchdog.events import PatternMatchingEventHandler
 
 
-class GotHandler(RegexMatchingEventHandler):
+class GotHandler(PatternMatchingEventHandler):
     def __init__(self, got_ignore):
+        print(got_ignore)
         self.got_ignore = got_ignore
-        super().__init__(ignore_regexes=self.got_ignore)
+        super().__init__(ignore_patterns=self.got_ignore, ignore_directories=True)
 
-    def on_modified(self, event):
-        print(event)
-        # self.process(event)
+    def on_any_event(self, event):
+        self.process(event)
 
     def process(self, event):
         cmd = GIT("add {}".format(event.src_path), exec=False)
