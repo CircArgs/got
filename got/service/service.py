@@ -3,6 +3,7 @@
 
 import sys
 import os
+import pickle
 import time
 from watchdog.observers import Observer
 from colorama import Fore, Back
@@ -10,7 +11,7 @@ from got.events import GotHandler
 from got.cli import cli
 from got.__version__ import version
 from clikit.api.command.exceptions import NoSuchCommandException
-import fnmatch
+from treelib import Tree, Node
 
 
 class Got:
@@ -19,9 +20,14 @@ class Got:
         got_ignore_path = os.path.join(src_path, ".gotignore")
         if os.path.exists(got_ignore_path):
             with open(got_ignore_path) as got_ignore:
-                self.got_ignore += ["*/"+l for l in got_ignore.readlines()]
-        # got_ignore = list(map(fnmatch.translate, got_ignore))
+                self.got_ignore += ["*/" + l for l in got_ignore.readlines()]
         self.interactive = interactive
+        got_file = os.path.join(src_path, ".gotfile")
+        if os.path.exists(got_file):
+            with open(got_file, "rb") as f:
+                tree = pickle.load(f)
+        else:
+            tree = Tree()
         self.__src_path = src_path
         self.__event_handler = GotHandler(self.got_ignore)
         self.__event_observer = Observer()

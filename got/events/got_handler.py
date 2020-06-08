@@ -1,6 +1,7 @@
 import os
 from got.macros import GIT
 from watchdog.events import PatternMatchingEventHandler
+from got.utils.got_head import got_head
 
 
 class GotHandler(PatternMatchingEventHandler):
@@ -13,7 +14,10 @@ class GotHandler(PatternMatchingEventHandler):
         self.process(event)
 
     def process(self, event):
-        cmd = GIT("add {}".format(event.src_path), exec=False)
-        cmd += " && "
-        cmd += GIT('commit -m "modified file {}"'.format(event.src_path), exec=False)
-        os.system(cmd)
+        cmd = [
+            "add {}".format(event.src_path),
+            'commit -m "modified file {}"'.format(event.src_path),
+        ]
+        out, err = GIT(cmd)
+        if err is None:
+            head = got_head()

@@ -15,4 +15,5 @@ class Git(Command):
 
     def handle(self):
         git_command = " ".join(self.argument("git"))
-        GIT(git_command, False)
+        out, err = GIT(git_command, False)
+        print(out)
