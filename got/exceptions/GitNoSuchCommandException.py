@@ -1,0 +1,2 @@
+class GitNoSuchCommandException(Exception):
+    pass

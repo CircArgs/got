@@ -12,6 +12,7 @@ from got.cli import cli
 from got.__version__ import version
 from clikit.api.command.exceptions import NoSuchCommandException
 from got.tree import GotTree, GotNode
+from ..exceptions import GitNoSuchCommandException
 
 
 class Got:
@@ -66,13 +67,19 @@ class Got:
                     try:
                         command = cli.application.find(name)
                     except NoSuchCommandException:
-                        try:
-                            shell = cli.application.find("shell")
-                            shell.call("shell", cmd)
-                        except Exception as e:
-                            print(Fore.RED + str(e))
-                    # except NoSuchCommandException as e:
-                    #     print(Fore.RED + str(e))
+                        git = cli.application.find("git")
+
+                        if not git is None:
+                            try:
+                                try:
+                                    git.call("git", cmd)
+                                except GitNoSuchCommandException:
+
+                                    shell = cli.application.find("shell")
+                                    shell.call("shell", cmd)
+                            except Exception as e:
+                                print(Fore.RED + str(e))
+
                     if not command is None:
                         try:
                             command.call(name, args)

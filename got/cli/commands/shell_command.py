@@ -8,7 +8,7 @@ from shlex import split
 
 class Shell(Command):
     """
-    Shell command passthrough
+    Explicitly pass commands to the shell
 
     shell
         {shell* : shell command to forward}
@@ -16,4 +16,4 @@ class Shell(Command):
 
     def handle(self):
         shell_command = " ".join(self.argument("shell"))
-        SHELL(shell_command)
+        return SHELL(shell_command)

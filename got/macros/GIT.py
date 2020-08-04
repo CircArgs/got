@@ -2,9 +2,17 @@ import os
 import subprocess
 from colorama import Fore
 from got.utils import is_got
+from ..exceptions import GitNoSuchCommandException
 
 
-def GIT(cmd, git_quiet=False, show=False, exec=True, remove_lock=True):
+def GIT(
+    cmd,
+    git_quiet=False,
+    print_command=False,
+    print_output=True,
+    exec=True,
+    remove_lock=True,
+):
     if type(cmd) != list:
         cmd = [cmd]
     if not is_got():
@@ -20,11 +28,19 @@ def GIT(cmd, git_quiet=False, show=False, exec=True, remove_lock=True):
                 for command in cmd
             ]
         )
-        if show:
+        if print_command:
             print(to_exec)
         if exec:
-            p = subprocess.Popen(to_exec, stdout=subprocess.PIPE, shell=True)
-            return tuple(
+            p = subprocess.Popen(
+                to_exec, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True
+            )
+
+            out, err = tuple(
                 (None if v is None else v.decode("utf-8")) for v in p.communicate()
             )
+            if (not err is None) and ("not a git command" in err):
+                raise GitNoSuchCommandException()
+            if print_output and (not err is None) and out:
+                print(out)
+            return out, err
         return to_exec

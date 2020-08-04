@@ -7,7 +7,7 @@ from ...macros import GIT
 
 class Git(Command):
     """
-    Use git in got
+    Explicitly use git in got
 
     git
         {git* : git command to execute on got repo}
@@ -15,5 +15,4 @@ class Git(Command):
 
     def handle(self):
         git_command = " ".join(self.argument("git"))
-        out, err = GIT(git_command, False)
-        print(out)
+        GIT(git_command, git_quiet=False)
