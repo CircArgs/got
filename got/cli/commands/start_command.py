@@ -18,6 +18,6 @@ class Start(Command):
                 "<error>Can only run Got from a got directory. Try running `got init`</error>"
             )
             return
-        interactive = self.option("interactive")
+        interactive = self.option("background")
         got = Got(os.getcwd(), interactive=interactive)
         got.run()
