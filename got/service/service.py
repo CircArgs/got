@@ -57,8 +57,10 @@ class Got:
                     command = None
                     try:
                         command = cli.application.find(name)
-                    except NoSuchCommandException as e:
-                        print(Fore.RED + str(e))
+                    except NoSuchCommandException:
+                        command = cli.application.find("shell")
+                    # except NoSuchCommandException as e:
+                    #     print(Fore.RED + str(e))
                     if not command is None:
                         try:
                             command.call(name, args)
