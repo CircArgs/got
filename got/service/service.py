@@ -11,7 +11,7 @@ from got.events import GotHandler
 from got.cli import cli
 from got.__version__ import version
 from clikit.api.command.exceptions import NoSuchCommandException
-from treelib import Tree, Node
+from got.tree import GotTree, GotNode
 
 
 class Got:
@@ -22,18 +22,13 @@ class Got:
             with open(got_ignore_path) as got_ignore:
                 self.got_ignore += ["*/" + l for l in got_ignore.readlines()]
         self.interactive = interactive
-        got_file = os.path.join(src_path, ".gotfile")
-        if os.path.exists(got_file):
-            with open(got_file, "rb") as f:
-                tree = pickle.load(f)
-        else:
-            tree = Tree()
+        self.tree = None
+        self.__got_tree()
         self.__src_path = src_path
         self.__event_handler = GotHandler(self.got_ignore)
         self.__event_observer = Observer()
 
     def run(self, interactive=False):
-
         self.start()
         # intro for repl
         if self.interactive:
@@ -91,3 +86,12 @@ class Got:
         self.__event_observer.schedule(
             self.__event_handler, self.__src_path, recursive=True
         )
+
+    def __got_tree(self):
+        if self.tree is None:
+            self.tree = Got.get_got_tree(self.__src_path)
+        return self.tree
+
+    def commit(self, name, hash):
+        self.tree.create_node(name, hash, parent=self.tree.current_node)
+        Got.save_got_tree(self.__src_path, self.tree)

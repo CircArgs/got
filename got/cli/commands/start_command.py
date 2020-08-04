@@ -9,7 +9,7 @@ class Start(Command):
     Start got
 
     start
-        {--i|interactive : If set, got will run in repl mode, else it will run in the background}
+        {--b|background : If set, got will run in the background, else it will run in repl mode}
     """
 
     def handle(self):
@@ -18,6 +18,6 @@ class Start(Command):
                 "<error>Can only run Got from a got directory. Try running `got init`</error>"
             )
             return
-        interactive = self.option("interactive")
+        interactive = self.option("background")
         got = Got(os.getcwd(), interactive=interactive)
         got.run()
