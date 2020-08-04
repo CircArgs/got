@@ -23,8 +23,8 @@ class Got:
                 self.got_ignore += ["*/" + l for l in got_ignore.readlines()]
         self.interactive = interactive
         self.tree = None
-        self.__got_tree()
         self.__src_path = src_path
+        self.__got_tree()
         self.__event_handler = GotHandler(self.got_ignore)
         self.__event_observer = Observer()
 
@@ -32,10 +32,18 @@ class Got:
         self.start()
         # intro for repl
         if self.interactive:
-            repl_intro = "The got repl. VERSION {}".format(version)
-            print("=" * len(repl_intro) + "\n")
+            repl_intro = """                              ___  _____  ____ 
+                             / __)(  _  )(_  _)
+                            ( (_-. )(_)(   )(  
+                             \___/(_____) (__) 
+
+                        The got repl. VERSION {}""".format(
+                version
+            )
+
+            print("=" * 80 + "\n")
             print(repl_intro)
-            print("\n" + "=" * len(repl_intro) + "\n")
+            print("\n" + "=" * 80 + "\n")
         try:
             while True:
                 # not repl
@@ -48,9 +56,9 @@ class Got:
                     # repl exit commands
                     if cmd in ("quit", "q"):
                         return
-                    cmd = cmd.split(" ")
+                    cmds = cmd.split(" ")
                     # command name is first
-                    name, args = cmd[0], " ".join(cmd[1:])
+                    name, args = cmds[0], " ".join(cmds[1:])
                     # no command entered skip
                     if not name:
                         continue
@@ -58,7 +66,11 @@ class Got:
                     try:
                         command = cli.application.find(name)
                     except NoSuchCommandException:
-                        command = cli.application.find("shell")
+                        try:
+                            shell = cli.application.find("shell")
+                            shell.call("shell", cmd)
+                        except Exception as e:
+                            print(Fore.RED + str(e))
                     # except NoSuchCommandException as e:
                     #     print(Fore.RED + str(e))
                     if not command is None:
@@ -93,6 +105,9 @@ class Got:
         if self.tree is None:
             self.tree = Got.get_got_tree(self.__src_path)
         return self.tree
+
+    def get_got_tree(self):
+        return None
 
     def commit(self, name, hash):
         self.tree.create_node(name, hash, parent=self.tree.current_node)

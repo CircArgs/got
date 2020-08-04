@@ -6,7 +6,6 @@ from got.utils.got_head import got_head
 
 class GotHandler(PatternMatchingEventHandler):
     def __init__(self, got_ignore):
-        print(got_ignore)
         self.got_ignore = got_ignore
         super().__init__(ignore_patterns=self.got_ignore, ignore_directories=True)
 

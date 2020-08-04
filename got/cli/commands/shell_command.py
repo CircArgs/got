@@ -15,5 +15,5 @@ class Shell(Command):
     """
 
     def handle(self):
-        shell_command = " ".join(self.argument("git"))
+        shell_command = " ".join(self.argument("shell"))
         SHELL(shell_command)
