@@ -3,7 +3,6 @@ import os
 import subprocess
 import shutil
 from cleo import Command
-from colorama import Fore
 from ...utils import is_got, remove_got
 
 
@@ -17,24 +16,20 @@ class Init(Command):
 
     def handle(self):
         yes = self.option("yes")
-        self.add_style("success", fg="blue", bg="green", options=["bold", "blink"])
-        self.line("<comment>Checking for existing got dir</comment>")
+        self.line("<info>Checking for existing got dir</info>")
         move_to = os.path.dirname(os.path.abspath("__got_temp__"))
         if is_got(move_to):
             if not (
                 yes
-                or self.confirm(
-                    Fore.LIGHTRED_EX
-                    + "{} already contains .got. Would you like to overwrite it?".format(
-                        move_to
-                    ),
-                    False,
+                or (
+                    self.line("<question>{} already contains .got. </>".format(move_to))
+                    or self.confirm("Would you like to overwrite it?", False)
                 )
             ):
                 self.line("<error>Failed to instantiate got dir.</error>")
                 return
             else:
-                self.line(Fore.LIGHTYELLOW_EX + "Removing got {}.".format(move_to))
+                self.line("<fg=yellow;options=bold>Removing got {}.</>".format(move_to))
                 remove_got(move_to)
         else:
             self.line("<info>No existing got dir. Instantiating new got dir</info>")

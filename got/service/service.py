@@ -2,17 +2,18 @@
 
 
 import sys
+import shlex
 import os
 import pickle
 import time
 from watchdog.observers import Observer
-from colorama import Fore, Back
 from got.events import GotHandler
-from got.cli import cli
+from ..cli import cli
 from got.__version__ import version
 from clikit.api.command.exceptions import NoSuchCommandException
 from got.tree import GotTree, GotNode
 from ..exceptions import GitNoSuchCommandException
+from ..utils import lines as ascii_got_lines, width as ascii_got_width
 
 
 class Got:
@@ -33,31 +34,36 @@ class Got:
         self.start()
         # intro for repl
         if self.interactive:
-            repl_intro = """                              ___  _____  ____ 
-                             / __)(  _  )(_  _)
-                            ( (_-. )(_)(   )(  
-                             \___/(_____) (__) 
 
-                        The got repl. VERSION {}""".format(
-                version
-            )
+            repl_intro = ""
+            version_statement = "The got repl. VERSION {}".format(version)
+            pad = int(abs(len(version_statement) - ascii_got_width) / 2) * " "
+            if len(version_statement) > ascii_got_width:
+                for line in ascii_got_lines:
+                    repl_intro += pad + line + pad + "\n"
+                repl_intro += version_statement + "\n"
+            else:
+                repl_intro += "\n".join(ascii_got_lines)
+                repl_intro += pad + version_statement + pad + "\n"
 
-            print("=" * 80 + "\n")
-            print(repl_intro)
-            print("\n" + "=" * 80 + "\n")
+            cli.io.write_line("<bc1>" + repl_intro + "</>")
+
         try:
             while True:
                 # not repl
                 if not self.interactive:
                     time.sleep(1)
                 else:  # repl
-                    print(Fore.MAGENTA + "got: ", end="")
+                    cli.io.write("<c2>got: </>")
                     # get user input
+
                     cmd = input().strip()
                     # repl exit commands
-                    if cmd in ("quit", "q"):
+                    if cmd in ("exit", "quit", "q"):
                         return
-                    cmds = cmd.split(" ")
+                    if cmd == "":
+                        continue
+                    cmds = shlex.split(cmd)
                     # command name is first
                     name, args = cmds[0], " ".join(cmds[1:])
                     # no command entered skip
@@ -78,19 +84,17 @@ class Got:
                                     shell = cli.application.find("shell")
                                     shell.call("shell", cmd)
                             except Exception as e:
-                                print(Fore.RED + str(e))
+                                cli.io.write_line("<error>{}</>".format(str(e)))
 
                     if not command is None:
                         try:
                             command.call(name, args)
                         except Exception as e:
-                            print(
-                                Fore.RED
-                                + "There was an error processing your command `{}`. The error emitted by the command was:".format(
-                                    name
+                            cli.io.write_line(
+                                "<error>There was an error processing your command `{}`. The error emitted by the command was:\n{}</>".format(
+                                    name, str(e)
                                 )
                             )
-                            print(Fore.LIGHTRED_EX + Back.LIGHTWHITE_EX + str(e))
 
         except KeyboardInterrupt:
             self.stop()

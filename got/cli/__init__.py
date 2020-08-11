@@ -1,4 +1,3 @@
 from .cli import application as cli
-import colorama
+from .cli import io
 
-colorama.init(autoreset=True)
