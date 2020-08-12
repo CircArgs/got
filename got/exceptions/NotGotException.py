@@ -1,0 +1,2 @@
+class NotGotException(Exception):
+    pass

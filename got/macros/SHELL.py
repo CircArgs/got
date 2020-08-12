@@ -1,16 +1,12 @@
 import os
+import sys
 import subprocess
-from shellingham import detect_shell, ShellDetectionFailure
+from ..utils import get_shell
+from ..cli import cli
 
 
 def SHELL(cmd):
-    try:
-        shell = detect_shell()[1]
-    except ShellDetectionFailure:
-        shell = None
-    code = subprocess.call(cmd, executable=shell, shell=True)
-    if code != 0:
-        raise Exception(
-            "Process command `{}` exited with nonzero exit code {}".format(cmd, code)
-        )
-
+    code = subprocess.run([get_shell()[1], "-i", "-c", cmd]).returncode
+    if code == 0:
+        sys.exit(0)
+    sys.exit(subprocess.run(cmd, shell=True).returncode)

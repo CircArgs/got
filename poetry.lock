@@ -162,9 +162,8 @@ python = ">=3.6,<4.0"
 version = ">=0.3.0,<0.4.0"
 
 [[package]]
-category = "dev"
+category = "main"
 description = "Cross-platform colored terminal text."
-marker = "sys_platform == \"win32\""
 name = "colorama"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
@@ -563,7 +562,7 @@ python-versions = "*"
 version = "0.1.2"
 
 [[package]]
-category = "dev"
+category = "main"
 description = "Pexpect allows easy control of interactive console applications."
 name = "pexpect"
 optional = false
@@ -590,7 +589,7 @@ version = ">=0.12"
 dev = ["pre-commit", "tox"]
 
 [[package]]
-category = "dev"
+category = "main"
 description = "Run a subprocess in a pseudo terminal"
 name = "ptyprocess"
 optional = false
@@ -730,7 +729,7 @@ python-versions = "!=3.0,!=3.1,!=3.2,!=3.3,>=2.6"
 version = "1.3.2"
 
 [[package]]
-category = "dev"
+category = "main"
 description = "Python 2 and 3 compatibility utilities"
 name = "six"
 optional = false
@@ -796,6 +795,25 @@ socks = ["PySocks (>=1.5.6,<1.5.7 || >1.5.7,<2.0)"]
 
 [[package]]
 category = "main"
+description = "Miscellaneous utilities for dealing with filesystems, paths, projects, subprocesses, and more."
+name = "vistir"
+optional = false
+python-versions = "!=3.0,!=3.1,!=3.2,!=3.3,>=2.7"
+version = "0.5.2"
+
+[package.dependencies]
+colorama = ">=0.3.4,<0.4.2 || >0.4.2"
+six = "*"
+
+[package.extras]
+dev = ["pre-commit", "coverage", "isort", "flake8", "rope", "invoke", "parver", "sphinx", "sphinx-rtd-theme", "flake8-bugbear", "black"]
+requests = ["requests"]
+spinner = ["yaspin"]
+tests = ["hypothesis", "hypothesis-fspaths", "pytest", "pytest-rerunfailures (<9.0)", "pytest-xdist", "pytest-timeout", "readme-renderer", "twine", "mock"]
+typing = ["typing", "mypy", "mypy-extensions", "mypytools", "pytype", "typed-ast"]
+
+[[package]]
+category = "main"
 description = "Filesystem events monitoring"
 name = "watchdog"
 optional = false
@@ -850,7 +868,7 @@ docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
 testing = ["jaraco.itertools", "func-timeout"]
 
 [metadata]
-content-hash = "46d805ca82ee7a1020297775cd59d6cafce505fcfe6922318b0178d1a6dd80b4"
+content-hash = "f04be87d3046a857da28f41bd0cbcfe2689397a35195cef019665b197d87ab2f"
 python-versions = "^3.6"  # Compatible python versions must be declared here
 
 [metadata.files]
@@ -1284,6 +1302,10 @@ typing-extensions = [
 urllib3 = [
     {file = "urllib3-1.25.9-py2.py3-none-any.whl", hash = "sha256:88206b0eb87e6d677d424843ac5209e3fb9d0190d0ee169599165ec25e9d9115"},
     {file = "urllib3-1.25.9.tar.gz", hash = "sha256:3018294ebefce6572a474f0604c2021e33b3fd8006ecd11d62107a5d2a963527"},
+]
+vistir = [
+    {file = "vistir-0.5.2-py2.py3-none-any.whl", hash = "sha256:a37079cdbd85d31a41cdd18457fe521e15ec08b255811e81aa061fd5f48a20fb"},
+    {file = "vistir-0.5.2.tar.gz", hash = "sha256:eff1d19ef50c703a329ed294e5ec0b0fbb35b96c1b3ee6dcdb266dddbe1e935a"},
 ]
 watchdog = [
     {file = "watchdog-0.10.2.tar.gz", hash = "sha256:c560efb643faed5ef28784b2245cf8874f939569717a4a12826a173ac644456b"},

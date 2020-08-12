@@ -1,1 +1,2 @@
 from .GitNoSuchCommandException import GitNoSuchCommandException
+from .NotGotException import NotGotException

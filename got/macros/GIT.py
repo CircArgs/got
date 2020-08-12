@@ -2,7 +2,7 @@ import os
 import subprocess
 from colorama import Fore
 from got.utils import is_got
-from ..exceptions import GitNoSuchCommandException
+from ..exceptions import GitNoSuchCommandException, NotGotException
 from ..cli import cli
 
 
@@ -13,13 +13,15 @@ def GIT(
     print_output=True,
     exec=True,
     remove_lock=True,
+    send=None,
 ):
     if type(cmd) != list:
         cmd = [cmd]
     if not is_got():
-        io.write_line(
+        cli.io.write_line(
             "<error>Not a got repository (or any of the parent directories).</>"
         )
+        raise NotGotException()
     else:
         if remove_lock and os.path.exists(".got/index.lock"):
             os.remove(".got/index.lock")
@@ -34,16 +36,19 @@ def GIT(
         if print_command:
             cli.io.write_line(to_exec)
         if exec:
-            p = subprocess.Popen(
-                to_exec, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True
-            )
+            if send is None:
+                p = subprocess.Popen(
+                    to_exec, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True
+                )
 
-            out, err = tuple(
-                (None if v is None else v.decode("utf-8")) for v in p.communicate()
-            )
-            if (not err is None) and ("not a git command" in err):
-                raise GitNoSuchCommandException()
-            if print_output and (not err is None) and out:
-                cli.io.write_line(out)
-            return out, err
+                out, err = tuple(
+                    (None if v is None else v.decode("utf-8")) for v in p.communicate()
+                )
+                if (not err is None) and ("not a git command" in err):
+                    raise GitNoSuchCommandException()
+                if print_output and (not err is None) and out:
+                    cli.io.write_line(out)
+                return out, err
+            else:
+                send(to_exec)
         return to_exec
