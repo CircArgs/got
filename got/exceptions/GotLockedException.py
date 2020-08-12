@@ -1,0 +1,2 @@
+class GotLockedException(Exception):
+    pass

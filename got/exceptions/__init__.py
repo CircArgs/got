@@ -1,2 +1,3 @@
 from .GitNoSuchCommandException import GitNoSuchCommandException
 from .NotGotException import NotGotException
+from .GotLockedException import GotLockedException

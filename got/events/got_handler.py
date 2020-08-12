@@ -17,6 +17,6 @@ class GotHandler(PatternMatchingEventHandler):
             "add {}".format(event.src_path),
             'commit -m "modified file {}"'.format(event.src_path),
         ]
-        out, err = GIT(cmd)
+        out, err = GIT(cmd, print_output=False)
         if err is None:
             head = got_head()

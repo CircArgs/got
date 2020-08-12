@@ -6,19 +6,19 @@ from cleo import Command
 from ...utils import is_got, remove_got
 
 
-class Init(Command):
+class Remove(Command):
     """
-    Instantiates Got
+    Removes Got
 
     init
-        {--y|yes : If set, respond `yes` to all possible prompts.}
+        {--f|force : If got is locked by another process, attempt to kill the process and delete the repo.}
     """
 
     def handle(self):
         yes = self.option("yes")
         self.line("<info>Checking for existing got dir</info>")
         move_to = os.path.dirname(os.path.abspath("__got_temp__"))
-        if is_got(move_to, raise_exception=False):
+        if is_got(move_to):
             if not (
                 yes
                 or (

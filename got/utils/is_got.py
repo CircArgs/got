@@ -1,4 +1,5 @@
 import os
+from ..exceptions import NotGotException
 
 
 def is_got(path=os.getcwd()):
@@ -6,4 +7,6 @@ def is_got(path=os.getcwd()):
     if os.path.exists(potential_path):
         return potential_path
     else:
-        return False
+        raise NotGotException(
+            "This directory ({}) does not contain a got repository.".format(path)
+        )
