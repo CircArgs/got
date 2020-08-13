@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "got"
 version = "0.0.1"
-description = "Got: A a git based undo tree. Commit often? Got it."
+description = "Got: A git based undo tree. Commit often? Got it."
 
 license = "Apache-2.0"
 
@@ -14,7 +14,7 @@ readme = 'README.md'  # Markdown files are supported
 repository = "https://github.com/CircArgs/got"
 homepage = "https://github.com/CircArgs/got"
 
-keywords = ['git', 'got', 'commit', 'source control']
+keywords = ['git', 'got', 'commit', 'source control', "undo tree"]
 
 [tool.poetry.dependencies]
 python = "^3.6"  # Compatible python versions must be declared here

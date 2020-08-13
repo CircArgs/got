@@ -4,6 +4,7 @@ import subprocess
 import shutil
 from cleo import Command
 from ...utils import is_got, remove_got
+from ...exceptions import NotGotException
 
 
 class Init(Command):
@@ -18,7 +19,9 @@ class Init(Command):
         yes = self.option("yes")
         self.line("<info>Checking for existing got dir</info>")
         move_to = os.path.dirname(os.path.abspath("__got_temp__"))
-        if is_got(move_to, raise_exception=False):
+        try:
+            is_got(move_to)
+        except NotGotException:
             if not (
                 yes
                 or (
