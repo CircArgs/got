@@ -34,4 +34,3 @@ def remove_got_lock(path=os.getcwd()):
     locked = is_got_locked(path)
     if locked:
         os.remove(locked)
-

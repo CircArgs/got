@@ -24,4 +24,3 @@ class Remove(Command):
             nukedir(path)
         else:
             shutil.rmtree(path)
-
