@@ -61,14 +61,14 @@ class Shell:
         self.buffer = ""
 
     def route(self):
-        cmd = self.buffer
+        cmd = self.buffer.strip()
         if cmd.strip():
             name, *args = shlex.split(cmd)
 
             if name == "shell":
-                self.send_overwrite(cmd[len("shell") :].strip())
+                self.send_overwrite(cmd[len("shell") :])
             if name == "git":
-                self.send_overwrite(GIT(args, exec=False))
+                self.send_overwrite(GIT(cmd[len("git") :], exec=False))
             else:
                 try:
                     cli.application.find(name)

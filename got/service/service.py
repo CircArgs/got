@@ -34,7 +34,7 @@ class Got:
                 self.got_ignore += ["*/" + l for l in got_ignore.readlines()]
         self.interactive = interactive
         self.tree = None
-        self.__src_path = got_path
+        self.__src_path = src_path
         self.__got_tree()
 
         self.__event_handler = GotHandler(self.got_ignore)
