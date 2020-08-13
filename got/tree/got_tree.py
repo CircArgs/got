@@ -1,6 +1,6 @@
 from treelib import Tree
 import os
-import pickle
+import json
 
 
 class GotTree(Tree):
@@ -9,15 +9,28 @@ class GotTree(Tree):
 
     def save(self, src_path):
         got_file = os.path.join(src_path, ".gotfile")
-        with open(got_file, "wb") as f:
-            pickle.dump(self, f)
+        out = self.to_json(with_data=True)
+        with open(got_file, "w") as f:
+            f.write(out)
 
     @classmethod
     def get_tree(src_path):
         got_file = os.path.join(src_path, ".gotfile")
         if os.path.exists(got_file):
-            with open(got_file, "rb") as f:
-                tree = pickle.load(f)
+            with open(got_file, "r") as f:
+                data = json.loads(f.read())
+            tree = GotTree()
+            GotTree._build_tree(data, tree)
         else:
             tree = GotTree()
         return tree
+
+    @staticmethod
+    def _build_tree(node, tree, parent=None):
+        name = list(node.keys())[0]
+        child_properties = node[name]
+        data = child_properties["data"]
+        tree.create_node(identifier=name, data=data, parent=parent)
+        if "children" in child_properties:
+            for child in child_properties["children"]:
+                GotTree._build_tree(child, tree, name)
