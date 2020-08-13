@@ -21,7 +21,6 @@ class Init(Command):
         move_to = os.path.dirname(os.path.abspath("__got_temp__"))
         try:
             is_got(move_to)
-        except NotGotException:
             if not (
                 yes
                 or (
@@ -34,7 +33,7 @@ class Init(Command):
             else:
                 self.line("<fg=yellow;options=bold>Removing got {}.</>".format(move_to))
                 remove_got(move_to)
-        else:
+        except NotGotException:
             self.line("<info>No existing got dir. Instantiating new got dir</info>")
         init_res = subprocess.run(
             ["git", "init", "-q", "__got_temp__"], capture_output=True
