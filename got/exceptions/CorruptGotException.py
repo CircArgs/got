@@ -1,0 +1,2 @@
+class CorruptGotException(Exception):
+    pass

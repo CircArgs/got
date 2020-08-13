@@ -11,13 +11,14 @@ class GotHandler(PatternMatchingEventHandler):
         super().__init__(ignore_patterns=self.got_ignore, ignore_directories=True)
 
     def on_any_event(self, event):
-        print(generate_name())
         self.process(event)
 
     def process(self, event):
         cmd = [
             "add {}".format(event.src_path),
-            'commit -m "modified file {}"'.format(event.src_path),
+            'commit -m "modified file {}." -m "{}"'.format(
+                event.src_path, generate_name()
+            ),
         ]
         out, err = GIT(cmd, print_output=False)
         if err is None:
