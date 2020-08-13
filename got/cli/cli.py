@@ -4,8 +4,7 @@ from cleo import Application
 from .config import GotAppConfig
 from .got_io import GotIO
 
-config = GotAppConfig()
-config.set_version(version)
+config = GotAppConfig("got", version)
 io = GotIO(config.default_style_set)
 application = Application("got", complete=True, config=config)
 application.add(Init())
