@@ -18,7 +18,7 @@ class GotStyleSet(StyleSet):
             Style("c1").fg("cyan"),
             Style("bc1").fg("cyan").bold(),
             Style("c2").fg("yellow"),
-            Style("success").fg("blue").bg("green").bold().blinking(),
+            Style("success").fg("white").bg("blue").bold(),
         ]
 
         super(GotStyleSet, self).__init__(styles)

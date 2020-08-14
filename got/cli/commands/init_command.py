@@ -3,8 +3,9 @@ import os
 import subprocess
 import shutil
 from cleo import Command
-from ...utils import is_got, remove_got
+from ...utils import is_got, remove_got, nukedir
 from ...exceptions import NotGotException
+from ...macros import SHELL
 
 
 class Init(Command):
@@ -22,9 +23,8 @@ class Init(Command):
         if move_to == ".":
             move_to = os.getcwd()
 
-        self.line("<info>Checking for existing got dir</info>")
-
         try:
+            self.line("<info>Checking for existing got dir</info>")
             is_got(move_to)
             if not (
                 yes
@@ -40,22 +40,21 @@ class Init(Command):
                 remove_got(move_to)
         except NotGotException:
             self.line("<info>No existing got dir. Instantiating new got dir</info>")
-        init_res = subprocess.run(
-            ["git", "init", "-q", "__got_temp__"], capture_output=True
-        )
-        if init_res.returncode:
+        init_res = SHELL("git init -q __got_temp__", cwd=move_to, exit=False)
+        got_temp = os.path.join(move_to, "__got_temp__")
+        if init_res:
             self.line(
                 "<error>Could not use git. Failed to instantiate got dir.</error>"
             )
-        with open(os.path.join("__got_temp__", ".git", ".gitignore"), "w") as gitignore:
+        with open(os.path.join(got_temp, ".git", ".gitignore"), "w") as gitignore:
             gitignore.write("/*")
         os.rename(
-            os.path.join("__got_temp__", ".git"), os.path.join("__got_temp__", ".got")
+            os.path.join(got_temp, ".git"), os.path.join(got_temp, ".got"),
         )
         shutil.move(
             os.path.join("__got_temp__", ".got"), move_to,
         )
-        shutil.rmtree("__got_temp__")
+        nukedir(got_temp)
         self.line(
             "<success>Initialized empty Got repository in {} 🤩</success>".format(
                 os.path.join(move_to, ".got")
