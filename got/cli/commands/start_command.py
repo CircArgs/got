@@ -18,5 +18,6 @@ class Start(Command):
         path = self.option("path")
         if path == ".":
             path = os.getcwd()
+        path = os.path.abspath(path)
         got = Got(path, interactive=not background)
         got.run()

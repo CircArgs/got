@@ -4,9 +4,10 @@ import os
 
 class NameGenerator:
     def __init__(self, src_path):
-        with open(os.path.join(src_path, "adjectives.txt")) as f:
+        local = os.path.dirname(os.path.abspath(__file__))
+        with open(os.path.join(local, "adjectives.txt")) as f:
             self.adjectives = f.readlines()
-        with open(os.path.join(src_path, "nouns.txt")) as f:
+        with open(os.path.join(local, "nouns.txt")) as f:
             self.nouns = f.readlines()
 
     def generate_name(self, attempts: int = 3):
