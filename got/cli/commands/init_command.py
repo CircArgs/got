@@ -13,12 +13,17 @@ class Init(Command):
 
     init
         {--y|yes : If set, respond `yes` to all possible prompts.}
+        {--p|path=.} : path which .got is located in - default cwd}
     """
 
     def handle(self):
         yes = self.option("yes")
+        move_to = self.option("path")
+        if move_to == ".":
+            move_to = os.getcwd()
+
         self.line("<info>Checking for existing got dir</info>")
-        move_to = os.path.dirname(os.path.abspath("__got_temp__"))
+
         try:
             is_got(move_to)
             if not (
