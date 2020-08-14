@@ -35,6 +35,7 @@ class Got:
         self.interactive = interactive
         self.tree = None
         self.__src_path = src_path
+        self.__op_path = os.getcwd()
         self.__got_tree()
 
         self.__event_handler = GotHandler(self.__src_path, self.got_ignore)
@@ -78,7 +79,7 @@ class Got:
 
     def __schedule(self):
         self.__event_observer.schedule(
-            self.__event_handler, self.__src_path, recursive=True
+            self.__event_handler, self.__op_path, recursive=True
         )
 
     def __got_tree(self):

@@ -1,4 +1,3 @@
-# https://cleo.readthedocs.io/en/latest/
 import os
 import shutil
 from cleo import Command
