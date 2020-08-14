@@ -11,7 +11,7 @@ class GotHandler(PatternMatchingEventHandler):
         self.name_generator = NameGenerator(src_path)
         super().__init__(ignore_patterns=self.got_ignore, ignore_directories=True)
 
-    def on_any_event(self, event):
+    def on_created(self, event):
         self.process(event)
 
     def process(self, event):
