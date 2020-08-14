@@ -52,7 +52,7 @@ class Init(Command):
             os.path.join(got_temp, ".git"), os.path.join(got_temp, ".got"),
         )
         shutil.move(
-            os.path.join("__got_temp__", ".got"), move_to,
+            os.path.join(got_temp, ".got"), move_to,
         )
         nukedir(got_temp)
         self.line(

@@ -59,7 +59,7 @@ class Got:
 
             cli.io.write_line("<bc1>" + repl_intro + "</>")
             # enter user interact with child shell
-            Shell()
+            Shell(self.__src_path)
             # shell exit -> stop got
             self.stop()
         else:

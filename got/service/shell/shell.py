@@ -16,9 +16,11 @@ from ...cli import cli
 
 
 class Shell:
-    def __init__(self):
+    def __init__(self, src_path):
         # Grab current terminal dimensions to replace the hardcoded default
         # dimensions of pexpect.
+        self.src_path = src_path
+
         dims = get_terminal_size()
         name, executable = get_shell()
         self.reset_buffer()
@@ -68,7 +70,12 @@ class Shell:
             if name == "shell":
                 self.send_overwrite(cmd[len("shell") :])
             if name == "git":
-                self.send_overwrite(GIT(cmd[len("git") :], exec=False))
+                git_cmd = GIT(
+                    cmd[len("git") :],
+                    exec=False,
+                    got_path=os.path.join(self.src_path, ".got"),
+                )
+                self.send_overwrite(git_cmd)
             else:
                 try:
                     cli.application.find(name)

@@ -15,6 +15,7 @@ def GIT(
     remove_lock=True,
     send=None,
     cwd=os.getcwd(),
+    got_path=".got",
 ):
     if type(cmd) != list:
         cmd = [cmd]
@@ -28,8 +29,8 @@ def GIT(
             os.remove(".got/index.lock")
         to_exec = " && ".join(
             [
-                "git --git-dir=.got {}{}".format(
-                    command, " --quiet" if git_quiet else ""
+                "git --git-dir={} {}{}".format(
+                    got_path, command, " --quiet" if git_quiet else ""
                 )
                 for command in cmd
             ]
