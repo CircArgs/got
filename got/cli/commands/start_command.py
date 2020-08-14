@@ -10,9 +10,13 @@ class Start(Command):
 
     start
         {--B|no-shell : If set, got will not enter shell mode}
+        {--p|path=.} : path which .got is located in - default cwd}
     """
 
     def handle(self):
         background = self.option("no-shell")
-        got = Got(os.getcwd(), interactive=not background)
+        path = self.option("path")
+        if path == ".":
+            path = os.getcwd()
+        got = Got(path, interactive=not background)
         got.run()

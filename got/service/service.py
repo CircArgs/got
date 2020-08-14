@@ -25,8 +25,8 @@ from .shell.shell import Shell
 
 class Got:
     def __init__(self, src_path, interactive=False):
-        self.got_ignore = ["*/.git/*", "*/.got/*"]
         got_path = is_got(src_path)
+        self.got_ignore = ["*/.git/*", "*/.got/*"]
         # got_lock(src_path)
         got_ignore_path = os.path.join(got_path, ".gotignore")
         if os.path.exists(got_ignore_path):
@@ -37,7 +37,7 @@ class Got:
         self.__src_path = src_path
         self.__got_tree()
 
-        self.__event_handler = GotHandler(self.got_ignore)
+        self.__event_handler = GotHandler(self.__src_path, self.got_ignore)
         self.__event_observer = Observer()
 
     def run(self):
