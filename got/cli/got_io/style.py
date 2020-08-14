@@ -10,6 +10,7 @@ class GotStyleSet(StyleSet):
     def __init__(self):  # type: () -> None
         styles = [
             Style("info").fg("white").bold(),
+            Style("output").bg("light_gray").fg("black"),
             Style("comment").fg("cyan").bold(),
             Style("question").fg("magenta").bold(),
             Style("success").fg("green").bold(),

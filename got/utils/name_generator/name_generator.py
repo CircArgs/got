@@ -3,15 +3,12 @@ import os
 
 
 class NameGenerator:
-    def __init__(self, src_path):
+    def __init__(self):
         local = os.path.dirname(os.path.abspath(__file__))
         with open(os.path.join(local, "adjectives.txt")) as f:
             self.adjectives = f.read().split("\n")
         with open(os.path.join(local, "nouns.txt")) as f:
             self.nouns = f.read().split("\n")
-        import pdb
-
-        pdb.set_trace()
 
     def generate_name(self, attempts: int = 3):
         """

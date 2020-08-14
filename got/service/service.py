@@ -24,21 +24,28 @@ from .shell.shell import Shell
 
 
 class Got:
-    def __init__(self, src_path, interactive=False):
-        got_path = is_got(src_path)
+    def __init__(self, src_path, ignore_untracked, interactive=False):
+        self.got_path = is_got(src_path)
         self.got_ignore = ["*/.git/*", "*/.got/*"]
         # got_lock(src_path)
-        got_ignore_path = os.path.join(got_path, ".gotignore")
+        got_ignore_path = os.path.join(self.got_path, ".gotignore")
         if os.path.exists(got_ignore_path):
             with open(got_ignore_path) as got_ignore:
                 self.got_ignore += ["*/" + l for l in got_ignore.readlines()]
         self.interactive = interactive
-        self.tree = None
+
         self.__src_path = src_path
         self.__op_path = os.getcwd()
+        self.tree = None
         self.__got_tree()
 
-        self.__event_handler = GotHandler(self.__src_path, self.got_ignore)
+        self.__event_handler = GotHandler(
+            self.__src_path,
+            self.got_path,
+            self.got_ignore,
+            got_tree=self.tree,
+            ignore_untracked=ignore_untracked,
+        )
         self.__event_observer = Observer()
 
     def run(self):
@@ -83,13 +90,6 @@ class Got:
         )
 
     def __got_tree(self):
-        if self.tree is None:
-            self.tree = Got.get_got_tree(self.__src_path)
+        self.tree = GotTree.get_tree(self.__src_path)
         return self.tree
 
-    def get_got_tree(self):
-        return None
-
-    def commit(self, name, hash):
-        self.tree.create_node(name, hash, parent=self.tree.current_node)
-        Got.save_got_tree(self.__src_path, self.tree)

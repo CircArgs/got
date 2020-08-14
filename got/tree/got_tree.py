@@ -49,18 +49,6 @@ class GotTree(Tree):
         return tree
 
     @classmethod
-    def get_tree(cls, src_path):
-        got_file = os.path.join(src_path, ".gotfile")
-        if os.path.exists(got_file):
-            with open(got_file, "r") as f:
-                data = json.loads(f.read())
-            tree = cls()
-            cls._build_tree(data, tree)
-        else:
-            tree = cls()
-        return tree
-
-    @classmethod
     def _build_tree(cls, node, tree, parent=None):
         name = list(node.keys())[0]
         child_properties = node[name]

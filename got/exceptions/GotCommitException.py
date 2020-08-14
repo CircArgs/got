@@ -1,0 +1,2 @@
+class GotCommitException(Exception):
+    pass
