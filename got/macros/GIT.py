@@ -14,6 +14,7 @@ def GIT(
     exec=True,
     remove_lock=True,
     send=None,
+    cwd=os.getcwd(),
 ):
     if type(cmd) != list:
         cmd = [cmd]
@@ -38,7 +39,11 @@ def GIT(
         if exec:
             if send is None:
                 p = subprocess.Popen(
-                    to_exec, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True
+                    to_exec,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
+                    shell=True,
+                    cwd=cwd,
                 )
 
                 out, err = tuple(

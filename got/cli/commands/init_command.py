@@ -29,14 +29,14 @@ class Init(Command):
             if not (
                 yes
                 or (
-                    self.line("<question>{} already contains .got. </>".format(move_to))
+                    self.line("<warning>{} already contains .got. </>".format(move_to))
                     or self.confirm("Would you like to overwrite it?", False)
                 )
             ):
                 self.line("<error>Failed to instantiate got dir.</error>")
                 return
             else:
-                self.line("<fg=yellow;options=bold>Removing got {}.</>".format(move_to))
+                self.line("<warning>Removing got {}.</>".format(move_to))
                 remove_got(move_to)
         except NotGotException:
             self.line("<info>No existing got dir. Instantiating new got dir</info>")
