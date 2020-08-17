@@ -1,4 +1,4 @@
-from .commands import Init, Git, Shell, Start, Remove
+from .commands import Init, Git, Shell, Start, Remove, Undo
 from got.__version__ import version
 from cleo import Application
 from .config import GotAppConfig
@@ -12,3 +12,5 @@ application.add(Git())
 application.add(Shell())
 application.add(Start())
 application.add(Remove())
+application.add(Undo())
+print(application.commands._commands)

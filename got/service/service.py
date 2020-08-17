@@ -11,7 +11,7 @@ from got.events import GotHandler
 from ..cli import cli
 from got.__version__ import version
 from clikit.api.command.exceptions import NoSuchCommandException
-from got.tree import GotTree, GotNode
+from got.graph import GotGraph
 from ..exceptions import GitNoSuchCommandException, NotGotException
 from ..utils import (
     lines as ascii_got_lines,
@@ -20,32 +20,33 @@ from ..utils import (
     is_got,
     got_lock,
 )
-from .shell.shell import Shell
+from .shell import Shell
 
 
 class Got:
     def __init__(self, src_path, ignore_untracked, interactive=False):
+        self.src_path = src_path
         self.got_path = is_got(src_path)
+        self.interactive = interactive
         self.got_ignore = ["*/.git/*", "*/.got/*"]
         # got_lock(src_path)
         got_ignore_path = os.path.join(self.got_path, ".gotignore")
         if os.path.exists(got_ignore_path):
             with open(got_ignore_path) as got_ignore:
                 self.got_ignore += ["*/" + l for l in got_ignore.readlines()]
-        self.interactive = interactive
 
-        self.__src_path = src_path
         self.__op_path = os.getcwd()
-        self.tree = None
-        self.__got_tree()
+
+        self.graph = GotGraph(self.got_path)
 
         self.__event_handler = GotHandler(
-            self.__src_path,
+            self.src_path,
             self.got_path,
             self.got_ignore,
-            got_tree=self.tree,
+            got_graph=self.graph,
             ignore_untracked=ignore_untracked,
         )
+
         self.__event_observer = Observer()
 
     def run(self):
@@ -66,7 +67,7 @@ class Got:
 
             cli.io.write_line("<bc1>" + repl_intro + "</>")
             # enter user interact with child shell
-            Shell(self.__src_path)
+            Shell(self.src_path)
             # shell exit -> stop got
             self.stop()
         else:
@@ -83,13 +84,10 @@ class Got:
     def stop(self):
         self.__event_observer.stop()
         self.__event_observer.join()
+        os.environ["GOT_ACTIVE"] = "1"
 
     def __schedule(self):
         self.__event_observer.schedule(
             self.__event_handler, self.__op_path, recursive=True
         )
-
-    def __got_tree(self):
-        self.tree = GotTree.get_tree(self.__src_path)
-        return self.tree
 

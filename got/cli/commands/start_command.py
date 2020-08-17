@@ -1,10 +1,11 @@
 import os
-from cleo import Command
+from distutils.util import strtobool
+from .got_base_command import GotCommand
 from got.service import Got
 from got.utils import is_got
 
 
-class Start(Command):
+class Start(GotCommand):
     """
     Start got
 
@@ -15,7 +16,19 @@ class Start(Command):
     """
 
     def handle(self):
+
+        got_activated = strtobool(os.environ.get("GOT_ACTIVE", "0"))
+        if got_activated:
+            self.line("<info>You are already running Got</>")
+
+            return
+
+        # Setting this to avoid spawning unnecessary nested shells
+        os.environ["GOT_ACTIVE"] = "1"
+
         background = self.option("no-shell")
+
+        self.application.interactive = not background
         path = self.option("path")
         if path == ".":
             path = os.getcwd()

@@ -20,10 +20,10 @@ keywords = ['git', 'got', 'commit', 'source control', "undo tree"]
 python = "^3.6"  # Compatible python versions must be declared here
 cleo = "^0.8.1"
 watchdog = "^0.10.2"
-treelib = "^1.6.1"
 shellingham = "^1.3.2"
 pexpect = "^4.8.0"
 vistir = "^0.5.2"
+git-networkx = "^2.3.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^3.0"

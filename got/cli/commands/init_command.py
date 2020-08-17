@@ -2,13 +2,13 @@
 import os
 import subprocess
 import shutil
-from cleo import Command
+from .got_base_command import GotCommand
 from ...utils import is_got, remove_got, nukedir
 from ...exceptions import NotGotException
 from ...macros import SHELL
 
 
-class Init(Command):
+class Init(GotCommand):
     """
     Instantiates Got
 

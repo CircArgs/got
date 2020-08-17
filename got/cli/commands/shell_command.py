@@ -1,12 +1,12 @@
 # https://cleo.readthedocs.io/en/latest/
 import os
 import shutil
-from cleo import Command
+from .got_base_command import GotCommand
 from ...macros import SHELL
 from shlex import split
 
 
-class Shell(Command):
+class Shell(GotCommand):
     """
     Explicitly pass commands to the shell
 

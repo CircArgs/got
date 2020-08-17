@@ -1,15 +1,16 @@
 import os
-from cleo import Command
+from .got_base_command import GotCommand
 from got.service import Got
 from got.utils import is_got
 
 
-class Undo(Command):
+class Undo(GotCommand):
     """
     Move to a previous got node
 
+    undo
     
     """
 
     def handle(self):
-        pass
+        print(self._application.interactive)

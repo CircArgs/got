@@ -1,4 +1,5 @@
 import os
+
 from got.macros import GIT
 from watchdog.events import PatternMatchingEventHandler
 from got.utils.got_head import got_head
@@ -13,10 +14,10 @@ class StartEvent:
 
 
 class GotHandler(PatternMatchingEventHandler):
-    def __init__(self, src_path, got_path, got_ignore, got_tree, ignore_untracked):
+    def __init__(self, src_path, got_path, got_ignore, got_graph, ignore_untracked):
         self.got_ignore = got_ignore
         self.got_path = got_path
-        self.got_tree = got_tree
+        self.got_graph = got_graph
         self.name_generator = NameGenerator()
         self.commit(StartEvent(src_path), ["started Got"])
         super().__init__(ignore_patterns=self.got_ignore, ignore_directories=True)
@@ -47,9 +48,7 @@ class GotHandler(PatternMatchingEventHandler):
             "commit {}".format(msg),
         ]
         out, err = GIT(cmds, print_output=False, got_path=self.got_path)
-
-        if not err.strip():
+        if err.strip():
             raise GotCommitException(err)
         else:
-            hash = got_head(self.got_path)
-            self.got_tree.add_commit(name, hash, info="")
+            self.got_graph.commit()

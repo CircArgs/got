@@ -1,10 +1,10 @@
 import os
 import shutil
-from cleo import Command
+from .got_base_command import GotCommand
 from ...utils import is_got, nukedir
 
 
-class Remove(Command):
+class Remove(GotCommand):
     """
     Removes Got
 

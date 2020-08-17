@@ -1,7 +1,4 @@
-from treelib import Node
-
-
-class GotNode(Node):
+class GotNode:
     def __init__(self, name, hash, info=""):
 
         super().__init__(tag=hash, identifier=name, data={"name": name, "info": info})

@@ -1,11 +1,11 @@
 # https://cleo.readthedocs.io/en/latest/
 import os
 import shutil
-from cleo import Command
+from .got_base_command import GotCommand
 from ...macros import GIT
 
 
-class Git(Command):
+class Git(GotCommand):
     """
     Explicitly use git in got
 
