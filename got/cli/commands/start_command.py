@@ -28,11 +28,15 @@ class Start(GotCommand):
 
         background = self.option("no-shell")
 
-        self.application.interactive = not background
         path = self.option("path")
         if path == ".":
             path = os.getcwd()
         ignore_untracked = self.option("ignore-untracked")
         path = os.path.abspath(path)
-        got = Got(path, interactive=not background, ignore_untracked=ignore_untracked)
+        got = Got(
+            path,
+            interactive=not background,
+            ignore_untracked=ignore_untracked,
+            application=self.application,
+        )
         got.run()

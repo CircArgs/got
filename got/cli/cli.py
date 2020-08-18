@@ -1,8 +1,18 @@
-from .commands import Init, Git, Shell, Start, Remove, Undo
+import os
+from distutils.util import strtobool
+from .commands import GotCommand, Init, Git, Shell, Start, Remove, Undo
 from got.__version__ import version
-from cleo import Application
+from cleo import Application as BaseApplication
 from .config import GotAppConfig
 from .got_io import GotIO
+
+
+class Application(BaseApplication):
+    def __init__(self, *args, **kwargs):
+        super(Application, self).__init__(*args, **kwargs)
+        self.interactive = strtobool(os.environ.get("GOT_ACTIVE", "0"))
+        self.got = None
+
 
 config = GotAppConfig("got", version)
 io = GotIO(config.default_style_set)
@@ -13,4 +23,4 @@ application.add(Shell())
 application.add(Start())
 application.add(Remove())
 application.add(Undo())
-print(application.commands._commands)
+

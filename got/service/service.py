@@ -24,7 +24,7 @@ from .shell import Shell
 
 
 class Got:
-    def __init__(self, src_path, ignore_untracked, interactive=False):
+    def __init__(self, src_path, ignore_untracked, interactive=False, application=None):
         self.src_path = src_path
         self.got_path = is_got(src_path)
         self.interactive = interactive
@@ -34,7 +34,8 @@ class Got:
         if os.path.exists(got_ignore_path):
             with open(got_ignore_path) as got_ignore:
                 self.got_ignore += ["*/" + l for l in got_ignore.readlines()]
-
+        self.application = application
+        self.application.got = self
         self.__op_path = os.getcwd()
 
         self.graph = GotGraph(self.got_path)
@@ -51,7 +52,6 @@ class Got:
 
     def run(self):
         self.start()
-
         if self.interactive:
             # intro for repl
             repl_intro = ""

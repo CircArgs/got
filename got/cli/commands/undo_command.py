@@ -1,6 +1,5 @@
 import os
 from .got_base_command import GotCommand
-from got.service import Got
 from got.utils import is_got
 
 
@@ -13,4 +12,6 @@ class Undo(GotCommand):
     """
 
     def handle(self):
-        print(self._application.interactive)
+        if self.interactive:
+            
+
