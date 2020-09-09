@@ -12,6 +12,4 @@ class Undo(GotCommand):
     """
 
     def handle(self):
-        if self.interactive:
-            
-
+        print("got interactive", self.interactive)

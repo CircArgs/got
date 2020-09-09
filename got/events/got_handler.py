@@ -3,7 +3,6 @@ import os
 from got.macros import GIT
 from watchdog.events import PatternMatchingEventHandler
 from got.utils.got_head import got_head
-from got.utils.name_generator import NameGenerator
 from ..cli import cli
 from ..exceptions import GotCommitException
 
@@ -18,7 +17,6 @@ class GotHandler(PatternMatchingEventHandler):
         self.got_ignore = got_ignore
         self.got_path = got_path
         self.got_graph = got_graph
-        self.name_generator = NameGenerator()
         self.commit(StartEvent(src_path), ["started Got"])
         super().__init__(ignore_patterns=self.got_ignore, ignore_directories=True)
 
@@ -39,8 +37,6 @@ class GotHandler(PatternMatchingEventHandler):
         self.commit(event, msgs)
 
     def commit(self, event, msgs):
-        name = self.name_generator.generate_name()
-        msgs.append("got name: {}".format(name))
         msgs = [' -m "{}"'.format(msg) for msg in msgs]
         msg = "".join(msgs)
         cmds = [

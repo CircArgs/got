@@ -12,6 +12,7 @@ class Application(BaseApplication):
         super(Application, self).__init__(*args, **kwargs)
         self.interactive = strtobool(os.environ.get("GOT_ACTIVE", "0"))
         self.got = None
+        self.fart = "poo"
 
 
 config = GotAppConfig("got", version)

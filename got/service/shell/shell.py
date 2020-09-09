@@ -78,8 +78,12 @@ class Shell:
                 self.send_overwrite(git_cmd)
             else:
                 try:
-                    cli.application.find(name)
-                    self.send_overwrite("got " + cmd)
+                    got_name, got_args = name, args
+                    if name.strip() == "got":
+                        got_name, *got_args = shlex.split(cmd[3:])
+                    command = cli.application.find(got_name)
+                    command.call(got_name, got_args)
+                    self.send_overwrite()
                 except NoSuchCommandException:
                     self.c.sendline()
         else:

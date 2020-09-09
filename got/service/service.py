@@ -80,11 +80,12 @@ class Got:
     def start(self):
         self.__schedule()
         self.__event_observer.start()
+        os.environ["GOT_ACTIVE"] = "1"
 
     def stop(self):
         self.__event_observer.stop()
         self.__event_observer.join()
-        os.environ["GOT_ACTIVE"] = "1"
+        os.environ["GOT_ACTIVE"] = "0"
 
     def __schedule(self):
         self.__event_observer.schedule(
